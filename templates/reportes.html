@@ -3,21 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Reportes - Cambrí</title>
+  <title>Producción - Cambrí</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="container">
-    <!-- ==== Sidebar igual al index ==== -->
+    <!-- ==== Sidebar (idéntica al index) ==== -->
     <aside class="sidebar">
       <div class="brand">
-        <a href="{{ url_for('volver') }}" class="brand-link">Cambrí</a>
+        <a href="{{ url_for('volver') }}" class="brand-link">Cambri</a>
       </div>
       <nav class="menu">
         <a href="{{ url_for('pedidos') }}"><i class="fas fa-box"></i> Pedidos</a>
-        <a href="{{ url_for('produccion') }}"><i class="fas fa-industry"></i> Producción</a>
+        <a href="{{ url_for('produccion') }}" class="active"><i class="fas fa-industry"></i> Producción</a>
         <a href="{{ url_for('inventario') }}"><i class="fas fa-warehouse"></i> Inventario</a>
         <a href="{{ url_for('reportes') }}" class="active"><i class="fas fa-chart-bar"></i> Reportes</a>
       </nav>
@@ -31,86 +30,72 @@
       </header>
 
       <section class="grid">
-        <!-- ==== Reporte de Pedidos ==== -->
-        <div class="card reportes">
-          <div class="card-title">Pedidos por Estado</div>
-          <canvas id="chartPedidos" height="140"></canvas>
+        <!-- ==== Registro de orden de producción ==== -->
+        <div class="card produccion">
+          <div class="card-title">Registrar Orden de Producción</div>
+          <form class="produccion-form">
+            <label>Número de pedido asociado:</label>
+            <input type="text" placeholder="Ej: 1001" required>
+
+            <label>Producto a fabricar:</label>
+            <input type="text" placeholder="Ej: Camisa de lino" required>
+
+            <label>Cantidad:</label>
+            <input type="number" placeholder="Ej: 50" required>
+
+            <label>Estado:</label>
+            <select>
+              <option>Programada</option>
+              <option>En proceso</option>
+              <option>Finalizada</option>
+            </select>
+
+            <button type="submit">Guardar Orden</button>
+          </form>
         </div>
 
-        <!-- ==== Reporte de Producción ==== -->
-        <div class="card reportes">
-          <div class="card-title">Producción Mensual</div>
-          <canvas id="chartProduccion" height="140"></canvas>
-        </div>
-
-        <!-- ==== Tabla de Resumen ==== -->
-        <div class="card reportes">
-          <div class="card-title">Resumen General</div>
+        <!-- ==== Listado de órdenes de producción ==== -->
+        <div class="card produccion">
+          <div class="card-title">Órdenes de Producción</div>
           <table class="table">
             <thead>
               <tr>
-                <th>Módulo</th>
-                <th>Registros</th>
-                <th>Última actualización</th>
+                <th>Orden</th>
+                <th>Pedido</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
                 <th>Estado</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td>Pedidos</td><td>45</td><td>27/10/2025</td><td><span class="badge accepted">Activo</span></td></tr>
-              <tr><td>Producción</td><td>32</td><td>26/10/2025</td><td><span class="badge process">En curso</span></td></tr>
-              <tr><td>Inventario</td><td>68</td><td>25/10/2025</td><td><span class="badge pending">En revisión</span></td></tr>
+              <tr>
+                <td>PR-001</td>
+                <td>1001</td>
+                <td>Camisa de lino</td>
+                <td>50</td>
+                <td><span class="badge pending">Programada</span></td>
+              </tr>
+              <tr>
+                <td>PR-002</td>
+                <td>1002</td>
+                <td>Pantalón denim</td>
+                <td>100</td>
+                <td><span class="badge process">En proceso</span></td>
+              </tr>
+              <tr>
+                <td>PR-003</td>
+                <td>1003</td>
+                <td>Chaqueta impermeable</td>
+                <td>40</td>
+                <td><span class="badge accepted">Finalizada</span></td>
+              </tr>
             </tbody>
           </table>
-        </div>
-
-        <!-- ==== Botones de exportación ==== -->
-        <div class="card reportes export">
-          <div class="card-title">Exportar Reportes</div>
-          <div class="report-buttons">
-            <button class="report-btn pdf"><i class="fas fa-file-pdf"></i> Generar PDF</button>
-            <button class="report-btn excel"><i class="fas fa-file-excel"></i> Generar Excel</button>
-          </div>
         </div>
       </section>
     </main>
   </div>
 
-  <script>
-    // ==== Gráfico de Pedidos ====
-    const ctxPedidos = document.getElementById('chartPedidos');
-    new Chart(ctxPedidos, {
-      type: 'doughnut',
-      data: {
-        labels: ['Pendientes', 'Aceptados', 'En proceso'],
-        datasets: [{
-          label: 'Pedidos',
-          data: [12, 20, 13],
-          backgroundColor: ['#ffcc00', '#4caf50', '#2196f3'],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        plugins: { legend: { position: 'bottom' } }
-      }
-    });
-
-    // ==== Gráfico de Producción ====
-    const ctxProduccion = document.getElementById('chartProduccion');
-    new Chart(ctxProduccion, {
-      type: 'bar',
-      data: {
-        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
-        datasets: [{
-          label: 'Órdenes completadas',
-          data: [15, 18, 22, 25, 20],
-          backgroundColor: '#2196f3'
-        }]
-      },
-      options: {
-        plugins: { legend: { display: false } },
-        scales: { y: { beginAtZero: true } }
-      }
-    });
-  </script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
