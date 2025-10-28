@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Producción - Cambrí</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- ==== Sidebar (idéntica al index) ==== -->
+    <aside class="sidebar">
+      <div class="brand">
+        <a href="{{ url_for('volver') }}" class="brand-link">Cambri</a>
+      </div>
+      <nav class="menu">
+        <a href="{{ url_for('pedidos') }}"><i class="fas fa-box"></i> Pedidos</a>
+        <a href="{{ url_for('produccion') }}" class="active"><i class="fas fa-industry"></i> Producción</a>
+        <a><i class="fas fa-warehouse"></i> Inventario</a>
+        <a><i class="fas fa-chart-bar"></i> Reportes</a>
+      </nav>
+      <div class="logout">Cerrar sesión</div>
+    </aside>
+
+    <!-- ==== Contenido principal ==== -->
+    <main class="main">
+      <header class="header">
+        <h1>Módulo de Producción</h1>
+      </header>
+
+      <section class="grid">
+        <!-- ==== Registro de orden de producción ==== -->
+        <div class="card produccion">
+          <div class="card-title">Registrar Orden de Producción</div>
+          <form class="produccion-form">
+            <label>Número de pedido asociado:</label>
+            <input type="text" placeholder="Ej: 1001" required>
+
+            <label>Producto a fabricar:</label>
+            <input type="text" placeholder="Ej: Camisa de lino" required>
+
+            <label>Cantidad:</label>
+            <input type="number" placeholder="Ej: 50" required>
+
+            <label>Estado:</label>
+            <select>
+              <option>Programada</option>
+              <option>En proceso</option>
+              <option>Finalizada</option>
+            </select>
+
+            <button type="submit">Guardar Orden</button>
+          </form>
+        </div>
+
+        <!-- ==== Listado de órdenes de producción ==== -->
+        <div class="card produccion">
+          <div class="card-title">Órdenes de Producción</div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Orden</th>
+                <th>Pedido</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>PR-001</td>
+                <td>1001</td>
+                <td>Camisa de lino</td>
+                <td>50</td>
+                <td><span class="badge pending">Programada</span></td>
+              </tr>
+              <tr>
+                <td>PR-002</td>
+                <td>1002</td>
+                <td>Pantalón denim</td>
+                <td>100</td>
+                <td><span class="badge process">En proceso</span></td>
+              </tr>
+              <tr>
+                <td>PR-003</td>
+                <td>1003</td>
+                <td>Chaqueta impermeable</td>
+                <td>40</td>
+                <td><span class="badge accepted">Finalizada</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cambrí - Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="brand">Cambri</div>
+      <nav class="menu">
+       <!-- <a class="active">Pedidos</a> -->
+        <li><a href="{{ url_for('pedidos') }}"><i class="fas fa-box"></i> Pedidos</a></li>
+        <a href="{{ url_for('produccion') }}"><i class="fas fa-industry"></i> Producción</a>
+        <a>Inventario</a>
+        <a>Reportes</a>
+      </nav>
+      <div class="logout">Cerrar sesión</div>
+    </aside>
+
+    <main class="main">
+      <header class="header">
+        <h1>Sistema de Gestión de Pedidos, Producción e Inventario Local</h1>
+      </header>
+
+      <section class="grid">
+        <div class="card pedidos">
+          <div class="card-title">Pedidos</div>
+          <div class="tabs">
+            <span>Registro de pedidos</span>
+            <span class="active">Consulta de pedidos</span>
+          </div>
+          <div class="search"><input placeholder="Buscar"></div>
+          <table class="table">
+            <thead><tr><th>Número</th><th>Cliente</th><th>Estado</th></tr></thead>
+            <tbody>
+              <tr><td>1001</td><td>Maria Inc.</td><td><span class="badge pending">Pendiente</span></td></tr>
+              <tr><td>1002</td><td>Julia SA</td><td><span class="badge accepted">Aceptado</span></td></tr>
+              <tr><td>1003</td><td>Pedro SP</td><td><span class="badge process">En proceso</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card inventory-chart">
+          <div class="card-title">Inventario</div>
+          <div class="chart-legend">
+            <div class="legend-item"><span class="dot red"></span>Producto A</div>
+            <div class="legend-item"><span class="dot orange"></span>Producto B</div>
+          </div>
+          <svg class="line-chart" viewBox="0 0 200 120" preserveAspectRatio="none">
+            <polyline points="0,80 40,60 80,70 120,50 160,30 200,20" fill="none" stroke="#e04f3d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="0,95 40,80 80,90 120,75 160,60 200,45" fill="none" stroke="#f2994a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <div class="card small">
+          <div class="card-title">Producción</div>
+          <div class="bar-chart">
+            <div class="bar" style="height:40%"></div>
+            <div class="bar" style="height:60%"></div>
+            <div class="bar" style="height:50%"></div>
+            <div class="bar" style="height:70%"></div>
+          </div>
+        </div>
+
+        <div class="card small">
+          <div class="card-title">Inventario</div>
+          <div class="bar-chart">
+            <div class="bar" style="height:20%"></div>
+            <div class="bar" style="height:35%"></div>
+            <div class="bar" style="height:55%"></div>
+            <div class="bar" style="height:75%"></div>
+          </div>
+        </div>
+
+        <div class="card reports">
+          <div class="card-title">Reportes</div>
+          <div class="report-buttons">
+            <div class="report-btn pdf">Generar PDF</div>
+            <div class="report-btn excel">Generar Excel</div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Inventario - Cambrí</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- ==== Sidebar igual al index ==== -->
+    <aside class="sidebar">
+      <div class="brand">
+        <a href="{{ url_for('volver') }}" class="brand-link">Cambrí</a>
+      </div>
+      <nav class="menu">
+        <a href="{{ url_for('pedidos') }}"><i class="fas fa-box"></i> Pedidos</a>
+        <a href="{{ url_for('produccion') }}"><i class="fas fa-industry"></i> Producción</a>
+        <a href="{{ url_for('inventario') }}" class="active"><i class="fas fa-warehouse"></i> Inventario</a>
+        <a><i class="fas fa-chart-bar"></i> Reportes</a>
+      </nav>
+      <div class="logout">Cerrar sesión</div>
+    </aside>
+
+    <!-- ==== Contenido principal ==== -->
+    <main class="main">
+      <header class="header">
+        <h1>Módulo de Inventario</h1>
+      </header>
+
+      <section class="grid">
+        <!-- ==== Registrar insumo ==== -->
+        <div class="card inventario">
+          <div class="card-title">Registrar Insumo</div>
+          <form class="inventario-form">
+            <label>Nombre del insumo:</label>
+            <input type="text" placeholder="Ej: Tela de algodón" required>
+
+            <label>Categoría:</label>
+            <select>
+              <option>Materia prima</option>
+              <option>Producto terminado</option>
+              <option>Accesorio</option>
+            </select>
+
+            <label>Cantidad disponible:</label>
+            <input type="number" placeholder="Ej: 200" required>
+
+            <label>Unidad de medida:</label>
+            <select>
+              <option>Metros</option>
+              <option>Unidades</option>
+              <option>Kilogramos</option>
+            </select>
+
+            <button type="submit">Guardar Insumo</button>
+          </form>
+        </div>
+
+        <!-- ==== Tabla de inventario ==== -->
+        <div class="card inventario">
+          <div class="card-title">Inventario Actual</div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Insumo</th>
+                <th>Categoría</th>
+                <th>Cantidad</th>
+                <th>Unidad</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>INV-001</td>
+                <td>Tela de algodón</td>
+                <td>Materia prima</td>
+                <td>250</td>
+                <td>Metros</td>
+                <td><span class="badge accepted">Disponible</span></td>
+              </tr>
+              <tr>
+                <td>INV-002</td>
+                <td>Botones metálicos</td>
+                <td>Accesorio</td>
+                <td>60</td>
+                <td>Unidades</td>
+                <td><span class="badge warning">Bajo stock</span></td>
+              </tr>
+              <tr>
+                <td>INV-003</td>
+                <td>Chaquetas terminadas</td>
+                <td>Producto terminado</td>
+                <td>10</td>
+                <td>Unidades</td>
+                <td><span class="badge danger">Agotado</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

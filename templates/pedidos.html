@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pedidos - Cambrí</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- ==== Sidebar igual al index ==== -->
+    <aside class="sidebar">
+      <div class="brand">
+        <a href="{{ url_for('volver') }}" class="brand-link">Cambri</a>
+      </div>
+      <nav class="menu">
+        <li><a href="{{ url_for('pedidos') }}" class="active"><i class="fas fa-box"></i> Pedidos</a></li>
+        <a><i class="fas fa-industry"></i> Producción</a>
+        <a><i class="fas fa-warehouse"></i> Inventario</a>
+        <a><i class="fas fa-chart-bar"></i> Reportes</a>
+      </nav>
+      <div class="logout">Cerrar sesión</div>
+    </aside>
+
+    <!-- ==== Contenido principal ==== -->
+    <main class="main">
+      <header class="header">
+        <h1>Módulo de Pedidos</h1>
+      </header>
+
+      <section class="grid">
+        <!-- ==== Registrar Pedido ==== -->
+        <div class="card pedidos">
+          <div class="card-title">Registrar Pedido</div>
+          <form class="pedido-form">
+            <label>Cliente:</label>
+            <input type="text" placeholder="Nombre del cliente" required>
+
+            <label>Estado:</label>
+            <select>
+              <option>Pendiente</option>
+              <option>Aceptado</option>
+              <option>En proceso</option>
+            </select>
+
+            <button type="submit">Guardar Pedido</button>
+          </form>
+        </div>
+
+        <!-- ==== Pedidos Registrados ==== -->
+        <div class="card pedidos">
+          <div class="card-title">Pedidos Registrados</div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Número</th>
+                <th>Cliente</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1001</td><td>Maria Inc.</td><td><span class="badge pending">Pendiente</span></td></tr>
+              <tr><td>1002</td><td>Julia SA</td><td><span class="badge accepted">Aceptado</span></td></tr>
+              <tr><td>1003</td><td>Pedro SP</td><td><span class="badge process">En proceso</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
