@@ -16,9 +16,9 @@
       </div>
       <nav class="menu">
         <li><a href="{{ url_for('pedidos') }}" class="active"><i class="fas fa-box"></i> Pedidos</a></li>
-        <a><i class="fas fa-industry"></i> Producción</a>
-        <a><i class="fas fa-warehouse"></i> Inventario</a>
-        <a><i class="fas fa-chart-bar"></i> Reportes</a>
+        <a href="{{ url_for('produccion') }}"><i class="fas fa-industry"></i> Producción</a>
+        <a href="{{ url_for('inventario') }}"><i class="fas fa-industry"></i> Inventario</a>
+        <a href="{{ url_for('reportes') }}"><i class="fas fa-industry"></i> Reportes</a>
       </nav>
       <div class="logout">Cerrar sesión</div>
     </aside>
