@@ -22,6 +22,10 @@ def produccion():
 def inventario():
     return render_template("inventario.html")
 
+@app.route("/reportes")
+def reportes():
+    return render_template("reportes.html")
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000)
