@@ -6,10 +6,91 @@
   <title>Pedidos - Cambrí</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <style>
+    /* === Estilos generales === */
+    .table-container {
+      max-height: 320px;
+      overflow-y: scroll;
+      overflow-x: auto;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      background-color: #fff;
+      margin-top: 10px;
+      scrollbar-width: thin;
+      scrollbar-color: #ccc #f5f5f5;
+    }
+
+    /* Scrollbar personalizada para navegadores WebKit */
+    .table-container::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    .table-container::-webkit-scrollbar-thumb {
+      background-color: #c1c1c1;
+      border-radius: 4px;
+    }
+    .table-container::-webkit-scrollbar-thumb:hover {
+      background-color: #a8a8a8;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 950px;
+    }
+
+    .table th, .table td {
+      padding: 12px 15px;
+      text-align: center;
+      border-bottom: 1px solid #e0e0e0;
+      vertical-align: middle;
+    }
+
+    .table th {
+      background-color: #f5f7fa;
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    /* === Select editable con colores === */
+    select.estado-editable {
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: center;
+      color: #fff;
+      transition: background-color 0.3s ease;
+    }
+
+    /* Colores según estado */
+    .estado-pendiente {
+      background-color: #4da3ff; /* Azul */
+    }
+
+    .estado-aceptado {
+      background-color: #48c78e; /* Verde */
+    }
+
+    .estado-en-proceso {
+      background-color: #ffd166; /* Amarillo */
+      color: #333;
+    }
+
+    select.estado-editable:focus {
+      outline: none;
+      filter: brightness(0.95);
+    }
+  </style>
 </head>
+
 <body>
   <div class="container">
-    <!-- ==== Sidebar igual al index ==== -->
+    <!-- ==== Sidebar ==== -->
     <aside class="sidebar">
       <div class="brand">
         <a href="{{ url_for('volver') }}" class="brand-link">Cambri</a>
@@ -17,8 +98,8 @@
       <nav class="menu">
         <li><a href="{{ url_for('pedidos') }}" class="active"><i class="fas fa-box"></i> Pedidos</a></li>
         <a href="{{ url_for('produccion') }}"><i class="fas fa-industry"></i> Producción</a>
-        <a href="{{ url_for('inventario') }}"><i class="fas fa-industry"></i> Inventario</a>
-        <a href="{{ url_for('reportes') }}"><i class="fas fa-industry"></i> Reportes</a>
+        <a href="{{ url_for('inventario') }}"><i class="fas fa-boxes"></i> Inventario</a>
+        <a href="{{ url_for('reportes') }}"><i class="fas fa-chart-line"></i> Reportes</a>
       </nav>
       <div class="logout">Cerrar sesión</div>
     </aside>
@@ -44,6 +125,18 @@
               <option>En proceso</option>
             </select>
 
+            <label>Contacto:</label>
+            <input type="text" placeholder="Correo o teléfono de contacto" required>
+
+            <label>Fecha de registro:</label>
+            <input type="date" required>
+
+            <label>Costo:</label>
+            <input type="number" step="0.01" placeholder="Valor del pedido" required>
+
+            <label>Descripción:</label>
+            <textarea placeholder="Descripción del pedido" required></textarea>
+
             <button type="submit">Guardar Pedido</button>
           </form>
         </div>
@@ -51,25 +144,60 @@
         <!-- ==== Pedidos Registrados ==== -->
         <div class="card pedidos">
           <div class="card-title">Pedidos Registrados</div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Número</th>
-                <th>Cliente</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>1001</td><td>Maria Inc.</td><td><span class="badge pending">Pendiente</span></td></tr>
-              <tr><td>1002</td><td>Julia SA</td><td><span class="badge accepted">Aceptado</span></td></tr>
-              <tr><td>1003</td><td>Pedro SP</td><td><span class="badge process">En proceso</span></td></tr>
-            </tbody>
-          </table>
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID Pedido</th>
+                  <th>Cliente</th>
+                  <th>Estado</th>
+                  <th>Contacto</th>
+                  <th>Fecha de Registro</th>
+                  <th>Costo</th>
+                  <th>Descripción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- === Registros existentes + nuevos === -->
+                <tr><td>1001</td><td>Maria Inc.</td><td><select class="estado-editable"><option selected>Pendiente</option><option>Aceptado</option><option>En proceso</option></select></td><td>maria@inc.com</td><td>2025-10-20</td><td>$250.000</td><td>Pedido de insumos textiles</td></tr>
+                <tr><td>1002</td><td>Julia SA</td><td><select class="estado-editable"><option>Pendiente</option><option selected>Aceptado</option><option>En proceso</option></select></td><td>+57 310 456 7890</td><td>2025-10-21</td><td>$180.000</td><td>Uniformes corporativos</td></tr>
+                <tr><td>1003</td><td>Pedro SP</td><td><select class="estado-editable"><option>Pendiente</option><option>Aceptado</option><option selected>En proceso</option></select></td><td>pedro.sp@gmail.com</td><td>2025-10-22</td><td>$320.000</td><td>Pedido de confección personalizada</td></tr>
+                <tr><td>1004</td><td>Lucía Design</td><td><select class="estado-editable"><option selected>Pendiente</option><option>Aceptado</option><option>En proceso</option></select></td><td>lucia@design.co</td><td>2025-10-23</td><td>$290.000</td><td>Diseño de prototipos</td></tr>
+                <tr><td>1005</td><td>TextilModa</td><td><select class="estado-editable"><option>Pendiente</option><option selected>Aceptado</option><option>En proceso</option></select></td><td>ventas@textilmoda.com</td><td>2025-10-23</td><td>$410.000</td><td>Uniformes empresariales</td></tr>
+                <tr><td>1006</td><td>Creativa LTDA</td><td><select class="estado-editable"><option>Pendiente</option><option>Aceptado</option><option selected>En proceso</option></select></td><td>contacto@creativa.com</td><td>2025-10-24</td><td>$520.000</td><td>Camisetas serigrafiadas</td></tr>
+                <tr><td>1007</td><td>Innovatex</td><td><select class="estado-editable"><option selected>Pendiente</option><option>Aceptado</option><option>En proceso</option></select></td><td>ventas@innovatex.com</td><td>2025-10-25</td><td>$610.000</td><td>Pedido de telas técnicas</td></tr>
+                <tr><td>1008</td><td>FabricaAndina</td><td><select class="estado-editable"><option>Pendiente</option><option selected>Aceptado</option><option>En proceso</option></select></td><td>info@fabricaandina.co</td><td>2025-10-25</td><td>$740.000</td><td>Textiles industriales</td></tr>
+                <tr><td>1009</td><td>ModaExpress</td><td><select class="estado-editable"><option selected>Pendiente</option><option>Aceptado</option><option>En proceso</option></select></td><td>contacto@modaexpress.co</td><td>2025-10-26</td><td>$380.000</td><td>Prendas personalizadas</td></tr>
+                <tr><td>1010</td><td>Estilo SA</td><td><select class="estado-editable"><option>Pendiente</option><option>Aceptado</option><option selected>En proceso</option></select></td><td>estilo@sa.com</td><td>2025-10-27</td><td>$450.000</td><td>Diseño de nuevos uniformes</td></tr>
+                <tr><td>1011</td><td>CreacionesLuz</td><td><select class="estado-editable"><option selected>Pendiente</option><option>Aceptado</option><option>En proceso</option></select></td><td>creaciones@luz.co</td><td>2025-10-27</td><td>$560.000</td><td>Vestuario para eventos</td></tr>
+                <tr><td>1012</td><td>AlphaDesign</td><td><select class="estado-editable"><option>Pendiente</option><option>Aceptado</option><option selected>En proceso</option></select></td><td>info@alphadesign.com</td><td>2025-10-28</td><td>$300.000</td><td>Diseños prototipo</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
     </main>
   </div>
 
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script>
+    // === Asigna color al select según el estado ===
+    function actualizarColor(select) {
+      select.classList.remove('estado-pendiente', 'estado-aceptado', 'estado-en-proceso');
+      const estado = select.value.toLowerCase().trim();
+      if (estado === 'pendiente') select.classList.add('estado-pendiente');
+      else if (estado === 'aceptado') select.classList.add('estado-aceptado');
+      else if (estado === 'en proceso') select.classList.add('estado-en-proceso');
+    }
+
+    document.querySelectorAll('.estado-editable').forEach(select => {
+      actualizarColor(select); // Color inicial
+      select.addEventListener('change', function() {
+        actualizarColor(this);
+        const row = this.closest('tr');
+        const estado = this.value;
+        console.log(`Pedido actualizado: ${row.children[0].innerText} - Nuevo estado: ${estado}`);
+      });
+    });
+  </script>
 </body>
 </html>
