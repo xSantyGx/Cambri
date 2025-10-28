@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Reportes - Cambrí</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- ==== Sidebar igual al index ==== -->
+    <aside class="sidebar">
+      <div class="brand">
+        <a href="{{ url_for('volver') }}" class="brand-link">Cambrí</a>
+      </div>
+      <nav class="menu">
+        <a href="{{ url_for('pedidos') }}"><i class="fas fa-box"></i> Pedidos</a>
+        <a href="{{ url_for('produccion') }}"><i class="fas fa-industry"></i> Producción</a>
+        <a href="{{ url_for('inventario') }}"><i class="fas fa-warehouse"></i> Inventario</a>
+        <a href="{{ url_for('reportes') }}" class="active"><i class="fas fa-chart-bar"></i> Reportes</a>
+      </nav>
+      <div class="logout">Cerrar sesión</div>
+    </aside>
+
+    <!-- ==== Contenido principal ==== -->
+    <main class="main">
+      <header class="header">
+        <h1>Módulo de Reportes</h1>
+      </header>
+
+      <section class="grid">
+        <!-- ==== Reporte de Pedidos ==== -->
+        <div class="card reportes">
+          <div class="card-title">Pedidos por Estado</div>
+          <canvas id="chartPedidos" height="140"></canvas>
+        </div>
+
+        <!-- ==== Reporte de Producción ==== -->
+        <div class="card reportes">
+          <div class="card-title">Producción Mensual</div>
+          <canvas id="chartProduccion" height="140"></canvas>
+        </div>
+
+        <!-- ==== Tabla de Resumen ==== -->
+        <div class="card reportes">
+          <div class="card-title">Resumen General</div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Módulo</th>
+                <th>Registros</th>
+                <th>Última actualización</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Pedidos</td><td>45</td><td>27/10/2025</td><td><span class="badge accepted">Activo</span></td></tr>
+              <tr><td>Producción</td><td>32</td><td>26/10/2025</td><td><span class="badge process">En curso</span></td></tr>
+              <tr><td>Inventario</td><td>68</td><td>25/10/2025</td><td><span class="badge pending">En revisión</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ==== Botones de exportación ==== -->
+        <div class="card reportes export">
+          <div class="card-title">Exportar Reportes</div>
+          <div class="report-buttons">
+            <button class="report-btn pdf"><i class="fas fa-file-pdf"></i> Generar PDF</button>
+            <button class="report-btn excel"><i class="fas fa-file-excel"></i> Generar Excel</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // ==== Gráfico de Pedidos ====
+    const ctxPedidos = document.getElementById('chartPedidos');
+    new Chart(ctxPedidos, {
+      type: 'doughnut',
+      data: {
+        labels: ['Pendientes', 'Aceptados', 'En proceso'],
+        datasets: [{
+          label: 'Pedidos',
+          data: [12, 20, 13],
+          backgroundColor: ['#ffcc00', '#4caf50', '#2196f3'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } }
+      }
+    });
+
+    // ==== Gráfico de Producción ====
+    const ctxProduccion = document.getElementById('chartProduccion');
+    new Chart(ctxProduccion, {
+      type: 'bar',
+      data: {
+        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+        datasets: [{
+          label: 'Órdenes completadas',
+          data: [15, 18, 22, 25, 20],
+          backgroundColor: '#2196f3'
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  </script>
+</body>
+</html>
