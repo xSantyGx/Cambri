@@ -111,6 +111,36 @@
       </header>
 
       <section class="grid">
+
+        <div class="card pedidos">
+  <div class="card-title">Registrar Pedido</div>
+  <form class="pedido-form" action="{{ url_for('crear_pedido') }}" method="POST">
+    <label>Cliente:</label>
+    <input type="text" name="cliente" placeholder="Nombre del cliente" required>
+
+    <label>Estado:</label>
+    <select name="estado">
+      <option>Pendiente</option>
+      <option>Aceptado</option>
+      <option>En proceso</option>
+    </select>
+
+    <label>Contacto:</label>
+    <input type="text" name="contacto" placeholder="Correo o teléfono" required>
+
+    <label>Fecha de registro:</label>
+    <input type="date" name="fecha" required>
+
+    <label>Costo:</label>
+    <input type="number" step="0.01" name="costo" placeholder="Valor del pedido" required>
+
+    <label>Descripción:</label>
+    <textarea name="descripcion" placeholder="Descripción del pedido" required></textarea>
+
+    <button type="submit">Guardar Pedido</button>
+  </form>
+</div>
+
         <!-- ==== Registrar Pedido ==== -->
         <div class="card pedidos">
           <div class="card-title">Registrar Pedido</div>
@@ -140,6 +170,49 @@
             <button type="submit">Guardar Pedido</button>
           </form>
         </div>
+<div class="card pedidos">
+  <div class="card-title">Pedidos Registrados</div>
+  <div class="table-container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID Pedido</th>
+          <th>Cliente</th>
+          <th>Estado</th>
+          <th>Contacto</th>
+          <th>Fecha de Registro</th>
+          <th>Costo</th>
+          <th>Descripción</th>
+          <th>Eliminar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in pedidos %}
+        <tr data-id="{{ p.id }}">
+          <td>{{ p.id }}</td>
+          <td>{{ p.cliente }}</td>
+          <td>
+            <select class="estado-editable">
+              <option {% if p.estado == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+              <option {% if p.estado == 'Aceptado' %}selected{% endif %}>Aceptado</option>
+              <option {% if p.estado == 'En proceso' %}selected{% endif %}>En proceso</option>
+            </select>
+          </td>
+          <td>{{ p.contacto }}</td>
+          <td>{{ p.fecha }}</td>
+          <td>${{ "%.0f"|format(p.costo) }}</td>
+          <td>{{ p.descripcion }}</td>
+          <td>
+            <form action="{{ url_for('eliminar_pedido', id=p.id) }}" method="POST" style="display:inline;">
+              <button type="submit" style="background:red;color:white;border:none;padding:5px 10px;border-radius:6px;">🗑️</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 
         <!-- ==== Pedidos Registrados ==== -->
         <div class="card pedidos">
@@ -178,6 +251,34 @@
       </section>
     </main>
   </div>
+
+  <script>
+function actualizarColor(select) {
+  select.classList.remove('estado-pendiente', 'estado-aceptado', 'estado-en-proceso');
+  const estado = select.value.toLowerCase().trim();
+  if (estado === 'pendiente') select.classList.add('estado-pendiente');
+  else if (estado === 'aceptado') select.classList.add('estado-aceptado');
+  else if (estado === 'en proceso') select.classList.add('estado-en-proceso');
+}
+
+document.querySelectorAll('.estado-editable').forEach(select => {
+  actualizarColor(select);
+  select.addEventListener('change', function() {
+    actualizarColor(this);
+    const row = this.closest('tr');
+    const id = row.getAttribute('data-id');
+    const estado = this.value;
+
+    fetch(`/pedidos/actualizar/${id}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ estado })
+    })
+    .then(r => r.json())
+    .then(data => console.log(data.mensaje));
+  });
+});
+</script>
 
   <script>
     // === Asigna color al select según el estado ===
